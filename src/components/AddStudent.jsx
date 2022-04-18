@@ -1,0 +1,147 @@
+import { useState, useRef } from "react";
+
+
+const data={
+  Firstname:"",
+  LastName:"",
+  Email:"",
+  Gender:"",
+  }
+
+
+export const AddStudent = ({getData}) => {
+  const [formData,setFormData] =useState(data);
+  const myref = useRef()
+ const handleChange = (e) => {
+   let {name, value, type, checked} = e.target
+   if(name==="profile"){
+    value=URL.createObjectURL(myref.current.files[0]);
+    console.log("value",value)
+    console.log("Enter")
+   setImgUrl(value)
+}
+// value=type==="file"?
+value=type==="checkbox" ?  checked : value;
+setFormData({...formData,[name]:value}); 
+ }
+
+ const submitData=(e)=>{
+  e.preventDefault();
+  // // console.log(formData);
+  // ref.current=formData
+ 
+ 
+  fetch("http://localhost:8080/formData",{
+      method: "POST",
+      body:JSON.stringify(formData),
+      headers:{
+          "content-type": "application/json"
+      }
+  })
+  .then(()=>{
+      getData();
+  })
+}
+
+  return (
+    <form  onSubmit={submitData} className="addstudent">
+      <div>
+        Firstname:{" "}
+        <input onChange={handleChange}
+          type="text"
+          name="first_name"
+          className="first_name"
+          placeholder="enter first name"
+        />
+      </div>
+      <div>
+        {" "}
+        Last Name:
+        <input onChange={handleChange}
+          type="text"
+          name="last_name"
+          className="last_name"
+          placeholder="enter last name"
+        />
+      </div>
+      <div>
+        {" "}
+        Email:
+        <input onChange={handleChange}
+          type="email"
+          name="email"
+          className="email"
+          placeholder="enter email"
+        />
+      </div>
+
+      <div>
+        Gender: {/* NOTE: radio boxes only work when they have same `name`. */}
+        <div>
+          Male
+          <input onChange={handleChange}
+            name="gender"
+            className="male"
+            type="radio"
+            value={"male"}
+          />{" "}
+          Female{" "}
+          <input onChange={handleChange}
+            name="gender"
+            className="female"
+            type="radio"
+            value={"female"}
+          />
+        </div>
+      </div>
+      <div>
+        Age{" "}
+        <input onChange={handleChange}
+          type="number"
+          name="age"
+          className="age"
+          placeholder="enter age"
+        />
+      </div>
+      <div>
+        Tenth Score:{" "}
+        <input onChange={handleChange}
+          type="number"
+          name="tenth_score"
+          className="tenth_score"
+          placeholder="enter 10th score"
+        />{" "}
+      </div>
+      <div>
+        Twelth Score:{" "}
+        <input onChange={handleChange}
+          type="number"
+          name="twelth_score"
+          className="twelth_score"
+          placeholder="enter 12th score"
+        />{" "}
+      </div>
+      <div>
+        <select onChange={handleChange}
+          value={""} // select dropdown needs both value and onChange attributes
+          name="preferred_branch"
+          className="preferred_branch"
+        >
+          <option value="law">law</option>
+          <option value="commerce">commerce</option>
+          <option value="science">science</option>
+          <option value="sports">sports</option>
+          <option value="arts">arts</option>
+          <option value="acting">acting</option>
+        </select>
+      </div>
+
+      <input onChange={handleChange} className="submit" type="submit" value="Submit" />
+      {
+        // <div className="error"></div>
+        // show this div with proper error before submitting form, if there's anything not provided
+        // eg: first name missing, age cannot be greater than 100 etc
+      }
+    </form>
+  );
+};

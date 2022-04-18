@@ -1,0 +1,23 @@
+.table {
+  border: 1px solid black;
+}
+
+.table thead tr th {
+  border: 1px solid black;
+}
+.table thead tr {
+  border: 1px solid black; 
+}
+.addstudent{
+  width: 500px;
+  margin: auto;
+  border: 1px solid black;
+  padding: 20px;
+}
+
+
+
+.controls{
+  width: 500px;
+  margin: auto;
+}
